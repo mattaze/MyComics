@@ -1,0 +1,18 @@
+
+ul.issues {
+    list-style: none;
+    width: 20%;
+}
+
+.issues > li {
+    background-color: yellow;
+}
+.issues > li.have {
+    background-color: unset;
+}
+
+li.issue {
+    background-color: unset;
+    border: solid black;
+    border-width: 0px 1px 1px;
+}

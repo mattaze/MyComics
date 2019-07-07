@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Comics</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace
+        }
+    </style>
+    <link href="style/mycomics.css" rel="stylesheet" type="text/css">
+</head>
+
+<!-- next task:  On edit - fill with that issues details -->
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>Menu item</li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>My Comics JSON</h1>
+    <input type="file" accept=".json" id="global-load" />
+
+    <label for="search-series">Series</label>
+    <input type="text" id="search-series" class="search-input" data-search="Series">
+    <label for="search-issue">Issue</label>
+    <input type="text" id="search-issue" class="search-input" data-search="IssueID">
+    <label for="search-issue">All</label>
+    <input type="text" id="search-depth" class="search-input" data-search="Depth">
+    <i id="search-state" style="display:none">searching...</i>
+
+    <div id="stats">
+        <h1>View Stats</h1>
+        <dl>
+            <dt>Series</dt><dd class="stat-info Series" >3</dd>
+            <dt>Have</dt><dd class="stat-info Have" >3</dd>
+            <dt>Issues</dt><dd class="stat-info Issues" >3</dd>
+            <dt>Duplicates</dt><dd class="stat-info Dups" >3</dd>
+        </dl>
+    </div>
+    
+    <div class="grid-container">
+        <div class="grid-item">
+            <h1>Uncanny X-Men - vol. 1 - 1963</h1>
+            <img src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" width="50">
+            <a target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
+                <span>Comic Vine - X-Men - vol. 1 - 1963</span>
+                <img src="comicvine.svg" width="70">
+            </a>
+            <a target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/the-uncanny-x-men/4050-3092" title="Comic Vine - Uncanny X-Men - vol. 1 - 1981">
+                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
+                <img src="comicvine.svg" width="70">
+            </a>
+            <a target="_blank" rel="noopener noreferrer" href="https://www.marvel.com/comics/series/2258/uncanny_x-men_1963_-_2011" title="Marvel - Uncanny X-Men - vol. 1 - 1963">
+                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
+                <img src="logo.marvel.svg" width="70">
+            </a>
+            <ul class="issues">
+                <li class="have">-1</li>
+                <li class="have">Giant-Size #1, 94-100</li>
+                <li>101</li>
+                <li>102</li>
+                <li>103</li>
+                <li>104</li>
+                <li>105</li>
+                <li class="have">110</li>
+                <li class="issue">
+                    <ul>
+                        <li class="js-coverdate">Apr 1978</li>
+                        <li class="js-have">have: 1</li>
+                        <li class="js-paid">£5</li>
+                        <li class="js-where">Manchester Comic Fair</li>
+                        <li class="js-when">2019-06-29</li>
+                    </ul>
+                </li>
+                <li>111</li>
+            </ul>
+        </div>
+        <hr>
+        <div class="grid-item">
+            <ul>
+                <li>A-Force - vol. 2 - 2016</li>
+                <li>A+X</li>
+                <li>Age Of X-Man - 2019</li>
+                <li>Age Of X-Man: Apocalypse and the X-Tracts - 2019</li>
+                <li>Age Of X-Man: Marvelous X-Men - 2019</li>
+                <li>Age Of X-Man: NextGen - 2019</li>
+                <li>Age Of X-Man: Prisoner X - 2019</li>
+                <li>Age Of X-Man: The Amazing Nightcrawler - 2019</li>
+                <li>Age Of X-Man: X-Tremists - 2019</li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!--
+    <div id="item-edit">
+        <form class="edit">
+            <ul>
+                <li><input type="text" class="key" value="IssueID" readonly><input type="number" class="value"></li>
+                <li><label><input class="Have" data-Property="Have" title="I have" type="checkbox" /> Have</label></li>
+                <li><input type="text" class="key" value="Paid"><input type="text" class="value"></li>
+                <li><input type="text" class="key" value="Where"><input type="text" class="value"></li>
+                <li><input type="text" class="key" value="When"><input type="text" class="value"></li>
+                <li><input type="text" class="key" ><input type="text" class="value"></li>
+                <li><button type="button" id="edit-add-kvp">Add Detail</button></li>
+            </ul>
+            <input class="edit-apply" type="submit" value="Apply" />
+        </form>
+    </div>-->
+    
+    <div style="display:none">
+        <template id="logo-comicvine">
+                <a target="_blank" rel="noopener noreferrer" href="/" title="Comic Vine - NAME - vol. 1 - 1981">
+                    Comic Vine - NAME - vol. 1 - 1981
+                    <img src="comicvine.svg" width="70">
+                </a>
+        </template>
+        <template id="logo-marvel">
+                <a target="_blank" rel="noopener noreferrer" href="/" title="Marvel - NAME - vol. 1 - 1981">
+                    Marvel - NAME - vol. 1 - 1981
+                    <img src="logo.marvel.svg" width="70">
+                </a>
+        </template>
+    </div>
+    
+    <footer>
+        <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Sitemap</a></li>
+        </ul>
+        <h5>a MazeEditing attempt</h5>
+<!--        <img src="facebook-logo.png">
+        <img src="twitter-logo.png">
+        <img src="linkedin-logo.png"> -->
+    </footer>
+
+    <script type="text/javascript" src="lib.js"></script>
+    <script type="text/javascript" src="mycomics.js"></script>
+</body>
+
+</html>
