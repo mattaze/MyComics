@@ -25,15 +25,21 @@
     </header>
 
     <h1>My Comics JSON</h1>
-    <input type="file" accept=".json" id="global-load" />
+    <div>
+        <input type="file" accept=".json" id="global-load" />
+        <button data-bind="click: Save">Save</button>
+    </div>
 
-    <label for="search-series">Series</label>
-    <input type="text" id="search-series" class="search-input" data-search="Series">
-    <label for="search-issue">Issue</label>
-    <input type="text" id="search-issue" class="search-input" data-search="IssueID">
-    <label for="search-issue">All</label>
-    <input type="text" id="search-depth" class="search-input" data-search="Depth">
-    <i id="search-state" style="display:none">searching...</i>
+    <div class="search">
+        <label for="search-series">Series</label>
+        <input type="text" id="search-series" class="search-input" data-search="Series">
+        <label for="search-issue">Issue</label>
+        <input type="text" id="search-issue" class="search-input" data-search="IssueID">
+        <label for="search-issue">All</label>
+        <input type="text" id="search-depth" class="search-input" data-search="Depth">
+        <i id="search-state" style="display:none">searching...</i>
+    </div>
+    
 
     <div id="stats">
         <h1>View Stats</h1>
@@ -46,8 +52,8 @@
     </div>
     
     <div class="grid-container">
-        <div class="grid-item">
-            <h1>Uncanny X-Men - vol. 1 - 1963</h1>
+        <div id="selected-series" class="grid-item">
+            <h1 data-bind="text: title, dblclick: edit">Uncanny X-Men - vol. 1 - 1963</h1>
             <img src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" width="50">
             <a target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
                 <span>Comic Vine - X-Men - vol. 1 - 1963</span>
@@ -61,6 +67,12 @@
                 <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
                 <img src="logo.marvel.svg" width="70">
             </a>
+            <button data-bind="click: NewIssue" title="Add Issue">+</button>
+            <pre>
+                ways to add issue
+                add range of numbers
+                special-1  1   1-5 for TPB
+            </pre>
             <ul class="issues">
                 <li class="have">-1</li>
                 <li class="have">Giant-Size #1, 94-100</li>
@@ -84,16 +96,9 @@
         </div>
         <hr>
         <div class="grid-item">
-            <ul>
-                <li>A-Force - vol. 2 - 2016</li>
-                <li>A+X</li>
-                <li>Age Of X-Man - 2019</li>
-                <li>Age Of X-Man: Apocalypse and the X-Tracts - 2019</li>
-                <li>Age Of X-Man: Marvelous X-Men - 2019</li>
-                <li>Age Of X-Man: NextGen - 2019</li>
-                <li>Age Of X-Man: Prisoner X - 2019</li>
-                <li>Age Of X-Man: The Amazing Nightcrawler - 2019</li>
-                <li>Age Of X-Man: X-Tremists - 2019</li>
+            <input type="text"><button id="add-series" data-bind="click: NewSeries">+</button>
+            <ul id="titles" data-bind="click: SelectSeries">
+                
             </ul>
         </div>
     </div>
