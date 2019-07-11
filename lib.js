@@ -66,6 +66,26 @@ lib.byString = function(o, s) {
     return o;
 };
 
+lib.jsonSave = function(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+};
+
+lib.dateStr = function(date, spacer) {
+    var d = date || new Date();
+    spacer = spacer || "-";
+    var d = new Date();
+    return d.getFullYear() + spacer + lib.pad(d.getMonth() + 1, 2) + spacer + lib.pad(d.getDate(), 2);
+};
+
+lib.pad = function(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+};
 
 /**
  * sub library of javascript functions. to avoid overlapping names for Element functions
@@ -135,3 +155,19 @@ lib.func.rp = function(str, obj) {
     }
     return new_str;
 };
+
+var $ = {};
+(function() {
+    this.d = document;
+    this.textNode = document.createTextNode.bind(document);
+    
+    /**
+     * @param {string} id element
+     * @param {function} func function
+     */
+    this.bind = function (id, func) {
+        document.getElementById(id).addEventListener(func);
+    };
+    
+    return this;
+}).apply($ = {});
