@@ -9,6 +9,9 @@
         body {
             font-family: 'Courier New', Courier, monospace
         }
+        .issue-view span {
+            min-width: 5px;
+        }
     </style>
     <link href="style/mycomics.css" rel="stylesheet" type="text/css">
 </head>
@@ -54,7 +57,8 @@
     <div class="grid-container">
         <div id="selected-series" class="grid-item">
             <h1 data-bind="text: title, dblclick: edit">Uncanny X-Men - vol. 1 - 1963</h1>
-            <img src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" width="50">
+            <p data-bind="text: image, dblclick: edit">ddd</p>
+            <img data-bind="src: image" src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" style="min-height: 200px; height: 200px;">
             <a target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
                 <span>Comic Vine - X-Men - vol. 1 - 1963</span>
                 <img src="comicvine.svg" width="70">
@@ -73,7 +77,11 @@
                 add range of numbers
                 special-1  1   1-5 for TPB
             </pre>
-            <ul class="issues">
+            <ul class="issues" data-bind="foreach: issues, click: SelectIssue, selectKey: TempID">
+                <li data-bind="text: issueid, attr: id">-1</li>
+            </ul>
+            
+            <ul class="issues" >
                 <li class="have">-1</li>
                 <li class="have">Giant-Size #1, 94-100</li>
                 <li>101</li>
@@ -84,6 +92,7 @@
                 <li class="have">110</li>
                 <li class="issue">
                     <ul>
+                        <li>110</li>
                         <li class="js-coverdate">Apr 1978</li>
                         <li class="js-have">have: 1</li>
                         <li class="js-paid">£5</li>
@@ -132,6 +141,20 @@
                     Marvel - NAME - vol. 1 - 1981
                     <img src="logo.marvel.svg" width="70">
                 </a>
+        </template>
+        <template id="issue-detail-li">
+            <li class="issue-view">
+                <ul>
+                    <li><button data-bind="click: NewProperty">Add Detail</button></li>
+                    <li><span data-bind="textprop: issueid"></span>: <span data-bind="text: issueid, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: have"></span>: <span data-bind="text: have, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: coverdate"></span>: <span data-bind="text: coverdate, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: subtitle"></span>: <span data-bind="text: subtitle, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: paid"></span>: <span data-bind="text: paid, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: where"></span>: <span data-bind="text: where, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: when"></span>: <span data-bind="text: when, dblclick: edit"></span></li>
+                </ul>
+            </li>
         </template>
     </div>
     

@@ -45,18 +45,94 @@ Binder.Types.dblclick  = function(elm, model, args) {
     Binder.Types.event(elm, model, args, "dblclick");
 };
 Binder.Types.event = function(elm, model, args, event_type) {
-    if(typeof args === 'string') {
+    //temp fix untill multiple args can be bound
+    if(model.issueid) {
+        elm.addEventListener(event_type, mycomics.edit);
+    }
+    
+    if(typeof args === 'string' || typeof model[args] === 'number') {
         elm.addEventListener(event_type, model[args]);
     }
+    
+    
 };
 
 /**
  * apply model text to element
  */
 Binder.Types.text = function(elm, model, args) {
-    if(typeof model[args] === 'string') {
+    if(typeof model[args] === 'string' || typeof model[args] === 'number') {
         elm.innerHTML = "";
         elm.appendChild($.textNode(model[args]));
+    }
+    else {
+        elm.innerHTML = "";
+        elm.appendChild($.textNode("no " + args));
+    }
+    elm.dataset.contentBind = args;
+};
+/**
+ * apply model text to element
+ */
+Binder.Types.textprop = function(elm, model, args) {
+    if(typeof model[args] === 'string' || typeof model[args] === 'number') {
+        elm.innerHTML = "";
+        elm.appendChild($.textNode(args));
+    }
+    elm.dataset.contentBind = args;
+};
+
+Binder.Types.src = function(elm, model, args) {
+    elm.src = model[args];
+};
+Binder.Types.attr = function(elm, model, args) {
+    //attr: {src: image}
+    //args >> "{src"
+    //elm.setAttribute(args, model[args]);
+    elm.setAttribute(args, model.TempID);
+};
+Binder.Types.array = function (elm, model, args) {
+    elm.innerHTML = "";
+    if(model["Show" + args]) {
+        model["Show" + args](elm, model, args);
+    }
+    
+    //temp fix
+    if(args == "issues") {
+        mycomics.ShowIssues(elm, model, args);
+    }
+};
+
+Binder.CloneTemplates = [];
+
+Binder.Types.foreach = function (elm, model, args) {
+    //check if CloneTemplates
+    let clone_id = elm.dataset.BinderCloneTemplateID;
+    //not bound?
+    if(!clone_id) {
+        let document_frag = document.createDocumentFragment();
+        let children = elm.children;
+        for(var c_i = 0; c_i < children.length; c_i++) {
+            document_frag.appendChild(children[c_i]);
+        }
+        clone_id = Binder.CloneTemplates.push(document_frag) -1;
+        elm.dataset.BinderCloneTemplateID = clone_id;
+    }
+    if(!model[args]) {
+        return;
+    }
+    
+    let template = Binder.CloneTemplates[clone_id];
+    
+    //get CloneTemplates
+    let model_arr = model[args];
+    let row_item = null;
+    for(var a_i = 0; a_i < model_arr.length; a_i++) {
+        let row_elm = template.cloneNode(true);
+        let row_item = model_arr[a_i];
+        Binder.Apply(row_item, row_elm);
+        //row_elm.dataset.id = row_item.TempID;
+        elm.appendChild(row_elm);
     }
 };
 
@@ -89,43 +165,122 @@ var mycomics = {};
 (function() {
     let self = this;
     self.storageKey = "mycomics";
+    self.listKey = "id";
     self.Catalog = [
         { title: "empty" }
     ];
+    self.SelectedSeries = {};
     
     self.backgroundMusic = function(url) {
     };
     
-    
+    /**
+     * event function for series ul bind click
+     */
     self.SelectSeries = function(event) {
-        let series = self.Catalog[event.target.dataset.id];
+        let series = self.Catalog[event.target.dataset[self.listKey]];
         if(series) {
             self.ShowSeries(series);
         }
     };
     
+    /**
+     * Display provided series to html
+     */
     self.ShowSeries = function(series) {
+        series = series || self.SelectedSeries;
+        self.SelectedSeries = series;
         Binder.Apply(series, document.getElementById("selected-series"));
     };
+    
+    self.ShowIssues = function(elm, model, args) {
+        if (!Array.isArray(model[args])) {
+            model[args] = [];
+        }
+        self.LoadUL({
+            data: model[args],
+            ul_elm: elm,
+            prop_id: "TempID",
+            content: "issueid"
+        });
+    };
+    
+    self.NewIssue = function() {
+        let model = self.SelectedSeries;
+        let new_issue = {issueid: "x", have: "0", coverdate: "", subtitle: "", paid: "", where:"", when:""};
+        new_issue.TempID = model.issues.push(new_issue) - 1;
+        
+        self.ShowSeries();
+    };
+    self.SelectIssue = function(event) {
+        let series = self.SelectedSeries.issues[event.target.dataset[self.listKey]];
+        if(series) {
+            self.ShowIssue(event.target, series);
+        }
+    };
+    self.ShowIssue = function(target, issue) {
+        //clear existing sensor
+        let issue_view = document.querySelector(".issue-view");
+        if(issue_view) {
+            issue_view.remove();
+        }
+        //
+        issue_view = lib.clone("issue-detail-li");
+        Binder.Apply(issue, issue_view);
+        //target.insertAdjacentElement("afterend", issue_view);
+        target.parentNode.insertBefore(issue_view, target.nextSibling);
+    };
+    
+    /**
+     * binding function for html edit content
+     */
     self.edit = function(evt) {
-        let input = document.createElement("input");
+        let elm = evt.target;
+        let func = self.editor[elm.nodeName] || self.editor.text;
+        func(elm);
+        
+    };
+    self.editor = {};
+    self.editor.text = function(elm) {
+        elm.contentEditable = "true";
+        elm.focus();
+        elm.addEventListener("blur", self.ApplyChange);
+        /* let input = document.createElement("input");
         input.type= "text";
         input.value = evt.target.textContent;
         evt.target.innerHTML = "";
         evt.target.appendChild(input);
+        input.focus(); */
+    };
+    self.editor.IMG = function(elm) {
+        let input = document.createElement("input");
+        input.type= "text";
+        input.value = elm.src;
+        input.dataset.contentBind = "image";
+        let parent = elm.parentNode;
+        parent.insertBefore(input, elm);
         input.focus();
+        input.addEventListener("blur", self.ApplyChange);
+    };
+    //https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg
+    //https://comicvine1.cbsistatic.com/uploads/scale_small/8/84205/4134088-xmen141nm92m093.jpg
+    
+    self.ApplyChange = function(evt) {
+        evt.target.removeEventListener("blur", self.ApplyChange);
+        evt.target.contentEditable = "false";
+        self.SelectedSeries[evt.target.dataset.contentBind] = evt.target.textContent;
     };
     
     self.ShowTitles = function() {
         self.LoadUL({
             data: self.Catalog,
             id: "titles",
-            prop_id: "TempID"
+            prop_id: "TempID",
+            content: "title"
         });
     };
-    self.LoadUL = function({ data, id, prop_id = "TempID" }) {
-        
-        var ul = document.getElementById(id);
+    self.LoadUL = function({ data, id, prop_id = "TempID", ul_elm , content}) {
+        let ul = ul_elm || document.getElementById(id);
         
         //lib.empty will remove events on the root as well.
         //ul = lib.empty(ul);
@@ -133,8 +288,8 @@ var mycomics = {};
         
         data.forEach(function (row) {
             var li = document.createElement("li");
-            li.appendChild($.textNode(row.title));
-            li.dataset.id = row[prop_id];
+            li.appendChild($.textNode(row[content]));
+            li.dataset[self.listKey] = row[prop_id];
             ul.appendChild(li);
         });
     };
