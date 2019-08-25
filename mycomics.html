@@ -74,17 +74,17 @@
                 <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
                 <img src="logo.marvel.svg" width="70">
             </a>
-            <button data-bind="click: NewIssue" title="Add Issue">+</button>
             <pre>
                 ways to add issue
                 add range of numbers
                 special-1  1   1-5 for TPB
             </pre>
+            <button data-bind="click: NewIssue" title="Add Issue">+ Add Issue</button>
             <ul class="issues" data-bind="foreach: issues, selectKey: TempID, click: SelectIssue">
-                <li data-bind="text: issueid, attr: id">-1</li>
+                <li data-bind="text: issueid, data: TempID">-1</li>
             </ul>
             
-            <ul class="issues" >
+            <ul style="display:none" class="issues" >
                 <li class="have">-1</li>
                 <li class="have">Giant-Size #1, 94-100</li>
                 <li>101</li>
@@ -149,15 +149,27 @@
             <li class="issue-view">
                 <ul>
                     <li><button data-bind="click: NewProperty">Add Detail</button></li>
-                    <li><span data-bind="textprop: issueid"></span>: <span data-bind="text: issueid, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: have"></span>: <span data-bind="text: have, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: coverdate"></span>: <span data-bind="text: coverdate, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: subtitle"></span>: <span data-bind="text: subtitle, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: paid"></span>: <span data-bind="text: paid, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: where"></span>: <span data-bind="text: where, dblclick: edit"></span></li>
-                    <li><span data-bind="textprop: when"></span>: <span data-bind="text: when, dblclick: edit"></span></li>
+                    <li><span data-bind="textprop: issueid"></span>: <span data-bind="value: issueid"></span></li>
+                    <li><span data-bind="textprop: have"></span>: <span data-bind="value: have"></span></li>
+                    <li><span data-bind="textprop: coverdate"></span>: <span data-bind="value: coverdate"></span></li>
+                    <li><span data-bind="textprop: subtitle"></span>: <span data-bind="value: subtitle"></span></li>
+                    <li><span data-bind="textprop: paid"></span>: <span data-bind="value: paid"></span></li>
+                    <li><span data-bind="textprop: where"></span>: <span data-bind="value: where"></span></li>
+                    <li><span data-bind="textprop: when"></span>: <span data-bind="value: when"></span></li>
                 </ul>
             </li>
+        </template>
+        <template id="issue-detail-ul">
+            <ul class="issue-view">
+                <li><button data-bind="click: NewProperty">Add Detail</button></li>
+                <li><span data-bind="textprop: issueid"></span>: <span data-bind="value: issueid"></span></li>
+                <li><span data-bind="textprop: have"></span>: <span data-bind="value: have"></span></li>
+                <li><span data-bind="textprop: coverdate"></span>: <span data-bind="value: coverdate"></span></li>
+                <li><span data-bind="textprop: subtitle"></span>: <span data-bind="value: subtitle"></span></li>
+                <li><span data-bind="textprop: paid"></span>: <span data-bind="value: paid"></span></li>
+                <li><span data-bind="textprop: where"></span>: <span data-bind="value: where"></span></li>
+                <li><span data-bind="textprop: when"></span>: <span data-bind="value: when"></span></li>
+            </ul>
         </template>
     </div>
     

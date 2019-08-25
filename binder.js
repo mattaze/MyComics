@@ -56,9 +56,8 @@ Binder.func.SetModel = function(model, elm) {
 Binder.Apply = function(model, root_element, events_model) {
     root_element = root_element || document.body;
     
-    if(root_element.nodeName != "#document-fragment") {
-        Binder.func.SetModel(model, root_element);
-    }
+    let valid_elm = root_element.nodeName == "#document-fragment" ? root_element.firstElementChild : root_element;
+    Binder.func.SetModel(model, valid_elm);
     
     var binds = root_element.querySelectorAll("[data-bind]");
     binds.forEach(function (elm) {
@@ -177,7 +176,18 @@ Binder.Types.attr = function(elm, model, args) {
     //attr: {src: image}
     //args >> "{src"
     //elm.setAttribute(args, model[args]);
-    elm.setAttribute(args, model.TempID);
+    //should use args and 
+    elm.setAttribute(args, model[args]);
+};
+Binder.Types.attr = function(elm, model, args) {
+    //attr: {src: image}
+    //args >> "{src"
+    //elm.setAttribute(args, model[args]);
+    //should use args and 
+    elm.setAttribute(args, model[args]);
+};
+Binder.Types.data = function(elm, model, args) {
+    elm.dataset[args] = model[args];
 };
 Binder.Types.array = function (elm, model, args) {
     elm.innerHTML = "";

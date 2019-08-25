@@ -75,7 +75,8 @@ var mycomics = {};
         self.ShowSeries();
     };
     self.SelectIssue = function(event) {
-        let series = self.SelectedSeries.issues[event.target.dataset[self.listKey]];
+        //let series = self.SelectedSeries.issues[event.target.dataset[self.listKey]];
+        let series = self.SelectedSeries.issues[event.target.dataset.TempID];
         if(series) {
             self.ShowIssue(event.target, series);
         }
@@ -86,11 +87,13 @@ var mycomics = {};
         if(issue_view) {
             issue_view.remove();
         }
-        //
-        issue_view = lib.clone("issue-detail-li");
+        
+        //issue_view = lib.clone("issue-detail-li");
+        issue_view = lib.clone("issue-detail-ul");
         Binder.Apply(issue, issue_view);
         //target.insertAdjacentElement("afterend", issue_view);
-        target.parentNode.insertBefore(issue_view, target.nextSibling);
+        //target.parentNode.insertBefore(issue_view, target.nextSibling);
+        target.appendChild(issue_view);
     };
     
     /**
