@@ -38,7 +38,10 @@ Binder.Types = {};
  */
 Binder.Types.click = function(elm, model, args) {
     if(typeof args === 'string') {
-        elm.addEventListener("click", model[args]);
+        var func = model[args] || mycomics[args];
+        if(func) {
+            elm.addEventListener("click", model[args]);
+        }
     }
 };
 Binder.Types.dblclick  = function(elm, model, args) {
@@ -105,8 +108,9 @@ Binder.Types.array = function (elm, model, args) {
 
 Binder.CloneTemplates = [];
 
-Binder.Types.foreach = function (elm, model, args) {
-    //check if CloneTemplates
+Binder.func = {};
+Binder.func.GetTemplate = function (elm) {
+//check if CloneTemplates
     let clone_id = elm.dataset.BinderCloneTemplateID;
     //not bound?
     if(!clone_id) {
@@ -118,12 +122,18 @@ Binder.Types.foreach = function (elm, model, args) {
         clone_id = Binder.CloneTemplates.push(document_frag) -1;
         elm.dataset.BinderCloneTemplateID = clone_id;
     }
+    return Binder.CloneTemplates[clone_id];
+};
+
+Binder.Types.foreach = function (elm, model, args) {
+    let template = Binder.func.GetTemplate(elm);
+    //elm = lib.empty(elm);
+    elm.innerHTML = "";
+
     if(!model[args]) {
         return;
     }
-    
-    let template = Binder.CloneTemplates[clone_id];
-    
+
     //get CloneTemplates
     let model_arr = model[args];
     let row_item = null;
@@ -295,7 +305,7 @@ var mycomics = {};
     };
     
     self.NewSeries = function() {
-        let new_series = { title: "new"};
+        let new_series = { title: "new", issues: []};
         self.Catalog.push(new_series);
         //select or display new
         self.ShowTitles();

@@ -1,0 +1,76 @@
+[
+    {
+      "title": "A-Force",
+      "TempID": 0,
+      "image": "comicvine.svg",
+      "issues": [
+        {
+          "issueid": "x",
+          "have": "0",
+          "coverdate": "",
+          "subtitle": "",
+          "paid": "",
+          "where": "",
+          "when": "",
+          "TempID": 0
+        }
+      ]
+    },
+    {
+        "title": "GeNext - 2008",
+        "TempID": 0,
+        "image": "comicvine.svg",
+        "issues": [
+          {
+            "issueid": "1",
+            "have": "1",
+            "coverdate": "",
+            "subtitle": "",
+            "paid": "£0.50",
+            "where": "Manchester Comic Fair",
+            "when": "2019-03-02",
+            "TempID": 0
+          },
+          {
+            "issueid": "2",
+            "have": "1",
+            "coverdate": "",
+            "subtitle": "",
+            "paid": "£0.50",
+            "where": "Manchester Comic Fair",
+            "when": "2019-03-02",
+            "TempID": 0
+          },
+          {
+            "issueid": "3",
+            "have": "1",
+            "coverdate": "",
+            "subtitle": "",
+            "paid": "£0.50",
+            "where": "Manchester Comic Fair",
+            "when": "2019-03-02",
+            "TempID": 0
+          },
+          {
+            "issueid": "4",
+            "have": "1",
+            "coverdate": "",
+            "subtitle": "",
+            "paid": "£0.50",
+            "where": "Manchester Comic Fair",
+            "when": "2019-03-02",
+            "TempID": 0
+          },
+          {
+            "issueid": "5",
+            "have": "1",
+            "coverdate": "",
+            "subtitle": "",
+            "paid": "£0.50",
+            "where": "Manchester Comic Fair",
+            "when": "2019-03-02",
+            "TempID": 0
+          }
+        ]
+      }
+  ]
