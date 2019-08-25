@@ -80,6 +80,9 @@ lib.dateStr = function(date, spacer) {
     var d = new Date();
     return d.getFullYear() + spacer + lib.pad(d.getMonth() + 1, 2) + spacer + lib.pad(d.getDate(), 2);
 };
+lib.timestamp = function() {
+    return new Date().toISOString();
+}
 
 lib.pad = function(n, width, z) {
     z = z || '0';

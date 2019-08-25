@@ -30,7 +30,8 @@
     <h1>My Comics JSON</h1>
     <div>
         <input type="file" accept=".json" id="global-load" />
-        <button data-bind="click: Save">Save</button>
+        <button data-bind="click: Save">Browser Save</button>
+        <button data-bind="click: Export">Export</button>
     </div>
 
     <div class="search">
@@ -56,7 +57,7 @@
     
     <div class="grid-container">
         <div id="selected-series" class="grid-item">
-            <h1 data-bind="text: title, dblclick: edit">Uncanny X-Men - vol. 1 - 1963</h1>
+            <h1 data-bind="value: title">Uncanny X-Men - vol. 1 - 1963</h1>
             <p data-bind="text: image, dblclick: edit" style="min-height: 10px; background-color:lightblue;">ddd</p>
             <img data-bind="src: image" src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" style="min-height: 200px; height: 200px;">
             
@@ -174,6 +175,7 @@
     </footer>
 
     <script type="text/javascript" src="lib.js"></script>
+    <script type="text/javascript" src="binder.js"></script>
     <script type="text/javascript" src="mycomics.js"></script>
 </body>
 
