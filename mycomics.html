@@ -11,6 +11,9 @@
         }
         .issue-view span {
             min-width: 5px;
+            display: inline-block;
+            min-height: 18px;
+            background-color: #ffffffbb;
         }
     </style>
     <link href="style/mycomics.css" rel="stylesheet" type="text/css">
@@ -29,7 +32,7 @@
 
     <h1>My Comics JSON</h1>
     <div>
-        <input type="file" accept=".json" id="global-load" />
+        <input type="file" accept=".json" id="global-load"  data-bind="change: LoadFileEvent"/>
         <button data-bind="click: Save">Browser Save</button>
         <button data-bind="click: Export">Export</button>
     </div>
@@ -45,7 +48,7 @@
     </div>
     
 
-    <div id="stats">
+    <div id="stats" style="display:none">
         <h1>View Stats</h1>
         <dl>
             <dt>Series</dt><dd class="stat-info Series" >3</dd>
@@ -58,9 +61,13 @@
     <div class="grid-container">
         <div id="selected-series" class="grid-item">
             <h1 data-bind="value: title">Uncanny X-Men - vol. 1 - 1963</h1>
-            <p data-bind="text: image, dblclick: edit" style="min-height: 10px; background-color:lightblue;">ddd</p>
-            <img data-bind="src: image" src="https://static.comicvine.com/uploads/scale_small/0/5344/1355017-uxm_v1_001_01.jpg" style="min-height: 200px; height: 200px;">
+            <p data-bind="text: image, dblclick: edit" class="edit-field">ddd</p>
+            <img data-bind="eval: SetSeriesImage" style="min-height: 200px; height: 200px;">
             
+            <div>
+                Comic Vine ID: <span data-bind="value: comicvineid" class="edit-field"></span>
+                <span data-bind="eval: SetComicVineLink"></span>
+            </div>
             
             <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
                 <span>Comic Vine - X-Men - vol. 1 - 1963</span>
@@ -80,8 +87,16 @@
                 special-1  1   1-5 for TPB
             </pre>
             <button data-bind="click: NewIssue" title="Add Issue">+ Add Issue</button>
+            <div>
+                <h4>Have Color Key</h4>
+                <ul class="issues">
+                    <li class="">Have None</li>
+                    <li class="have">Have 1</li>
+                    <li class="have many">Have Many</li>
+                </ul>
+            </div>
             <ul class="issues" data-bind="foreach: issues, selectKey: TempID, click: SelectIssue">
-                <li data-bind="text: issueid, data: TempID">-1</li>
+                <li data-bind="text: issueid, data: TempID, eval: SetIssueHave">-1</li>
             </ul>
             
             <ul style="display:none" class="issues" >
@@ -106,9 +121,13 @@
                 <li>111</li>
             </ul>
         </div>
-        <hr>
+        <!-- <hr> -->
         <div class="grid-item">
-            <input type="text"><button id="add-series" data-bind="click: NewSeries">+</button>
+            <div>
+                <input type="text" id="search-series-input" data-bind="input: SearchSeries" />
+                <button id="search-series" data-bind="click: SearchSeries">Search</button>
+            </div>
+            <button id="add-series" data-bind="click: NewSeries">+</button>
             <ul id="titles" data-bind="click: SelectSeries">
                 
             </ul>
@@ -186,6 +205,7 @@
         <img src="linkedin-logo.png"> -->
     </footer>
 
+    <script type="text/javascript" src="app.settings.js"></script>
     <script type="text/javascript" src="lib.js"></script>
     <script type="text/javascript" src="binder.js"></script>
     <script type="text/javascript" src="mycomics.js"></script>

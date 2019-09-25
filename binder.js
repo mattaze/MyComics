@@ -120,6 +120,25 @@ Binder.Types.click = function(elm, model, args) {
         }
     }
 };
+/**
+ * attach change event to input element
+ */
+Binder.Types.change = function(elm, model, args) {
+    if(typeof args === 'string') {
+        var func = model[args] || mycomics[args];
+        if(func) {
+            elm.addEventListener("change", model[args]);
+        }
+    }
+};
+
+/**
+ * attach input event to input element
+ */
+Binder.Types.input = function(elm, model, args) {
+    Binder.Types.event(elm, model, args, "input");
+};
+
 Binder.Types.dblclick  = function(elm, model, args) {
     Binder.Types.event(elm, model, args, "dblclick");
 };
@@ -133,6 +152,11 @@ Binder.Types.event = function(elm, model, args, event_type) {
     if(typeof args === 'string' || typeof model[args] === 'number') {
         elm.addEventListener(event_type, model[args]);
     }
+};
+
+Binder.Types.eval = function(elm, model, args) {
+    //temp fix
+    mycomics[args](elm, model);
 };
 
 /**
@@ -212,6 +236,10 @@ Binder.Types.foreach = function (elm, model, args) {
 
     //get CloneTemplates
     let model_arr = model[args];
+    //base array - apply xTempID key
+        Binder.ApplyTempID(model_arr);
+    //====
+    
     let row_item = null;
     for(var a_i = 0; a_i < model_arr.length; a_i++) {
         let row_elm = template.cloneNode(true);
@@ -219,6 +247,16 @@ Binder.Types.foreach = function (elm, model, args) {
         Binder.Apply(row_item, row_elm);
         //row_elm.dataset.id = row_item.TempID;
         elm.appendChild(row_elm);
+    }
+};
+
+/**
+ * TempID is a means to keep a master array, and then allow access via position on UL select
+ */
+Binder.ApplyTempID = function(array) {
+    let series_i = array.length;
+    while(series_i--) {
+        array[series_i].TempID = series_i;
     }
 };
 

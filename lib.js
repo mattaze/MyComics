@@ -74,6 +74,17 @@ lib.jsonSave = function(content, fileName, contentType) {
     a.click();
 };
 
+lib.jsonFileReadEvent = function(evt, callback) {
+    var reader = new FileReader();
+    reader.onload = function (load_event) {
+        var obj = JSON.parse(load_event.target.result);
+        if(callback) {
+            callback(obj);
+        }
+    };
+    reader.readAsText(evt.target.files[0]);
+};
+
 lib.dateStr = function(date, spacer) {
     var d = date || new Date();
     spacer = spacer || "-";
@@ -82,7 +93,7 @@ lib.dateStr = function(date, spacer) {
 };
 lib.timestamp = function() {
     return new Date().toISOString();
-}
+};
 
 lib.pad = function(n, width, z) {
     z = z || '0';
@@ -157,6 +168,49 @@ lib.func.rp = function(str, obj) {
         new_str = new_str.replace(attr, obj[attr]);
     }
     return new_str;
+};
+
+lib.searchInfo = {
+    instanceTime: "",
+    running: false,
+    instanceID: "xx1d" 
+};
+
+/**
+ * 
+ */
+lib.search = function(data, search_for, property, callback) {
+    if(!lib.searchInfo.worker) {
+        lib.searchInfo.worker = new Worker("search-worker.js");
+        lib.searchInfo.worker.onmessage = lib.searchResults;
+    }
+    var search_parameters = {data: data, search: search_for, property: property, instanceID: lib.searchInfo.instanceID};
+    lib.searchInfo.callback = callback;
+    
+    lib.searchInfo.running = true;
+    //lib.searchState.style.display = "";
+    lib.searchInfo.instanceTime = Date.now();
+    lib.searchInfo.worker.postMessage(search_parameters);
+};
+lib.searchResults = function (evt) {
+    console.log("lib.search time: " + (Date.now() - lib.searchInfo.instanceTime) + " ms");
+    
+    var results = evt.data;
+    
+    //MyLibraryJS.Show(results);
+    
+    lib.searchInfo.running = false;
+    //lib.searchState.style.display = "none";
+    
+    lib.searchInfo.callback(results);
+};
+
+lib.clearClass = function(parent_node, class_name) {
+    var elms = parent_node.querySelectorAll("." + class_name);
+
+    [].forEach.call(elms, function(elm) {
+        elm.classList.remove(class_name);
+    });
 };
 
 var $ = {};

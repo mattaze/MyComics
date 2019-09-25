@@ -8,11 +8,41 @@ ul.issues {
     background-color: yellow;
 }
 .issues > li.have {
-    background-color: unset;
+    /* background-color: unset; */
+    background-color: lightgreen;
+}
+.issues > li.have.many {
+    background-color: deepskyblue;
 }
 
 li.issue {
     background-color: unset;
     border: solid black;
     border-width: 0px 1px 1px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 60% 38%;
+    grid-gap: 1%;
+  }
+  
+.grid-item {
+    background-color: #efdfdf;
+    border-radius: 5px;
+}
+  
+.edit-field {
+    min-height: 10px;
+    background-color:lightblue;
+}
+
+.selectable {
+    cursor: pointer;
+}
+.selectable:hover {
+    background-color: #f0ff66;
+}
+.selectable.selected {
+    background-color: #6bff66;
 }

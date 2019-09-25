@@ -5,6 +5,10 @@
  */
 
 
+var myClasses = {
+    selected: "selected"
+};
+ 
 
 /**
  * <li>A-Force - vol. 2 - 2016</li>
@@ -40,7 +44,11 @@ var mycomics = {};
      * event function for series ul bind click
      */
     self.SelectSeries = function(event) {
+        var selected_class = myClasses.selected;
         let series = self.Catalog[event.target.dataset[self.listKey]];
+        
+        lib.clearClass(event.target.parentNode, selected_class);
+        event.target.classList.add(selected_class);
         if(series) {
             self.ShowSeries(series);
         }
@@ -59,6 +67,7 @@ var mycomics = {};
         if (!Array.isArray(model[args])) {
             model[args] = [];
         }
+        self.ApplyTempID(model[args]);
         self.LoadUL({
             data: model[args],
             ul_elm: elm,
@@ -135,15 +144,18 @@ var mycomics = {};
         self.SelectedSeries[evt.target.dataset.contentBind] = evt.target.textContent;
     };
     
-    self.ShowTitles = function() {
+    self.ShowTitles = function(data) {
+        data = data || self.Catalog;
         self.LoadUL({
-            data: self.Catalog,
+            data: data,
             id: "titles",
             prop_id: "TempID",
-            content: "title"
+            content: "title",
+            classes: "selectable"
         });
+        self.ShowSeries(data[0]);
     };
-    self.LoadUL = function({ data, id, prop_id = "TempID", ul_elm , content}) {
+    self.LoadUL = function({ data, id, prop_id = "TempID", ul_elm , content, classes}) {
         let ul = ul_elm || document.getElementById(id);
         
         //lib.empty will remove events on the root as well.
@@ -152,6 +164,7 @@ var mycomics = {};
         
         data.forEach(function (row) {
             var li = document.createElement("li");
+            li.className = classes || "";
             li.appendChild($.textNode(row[content]));
             li.dataset[self.listKey] = row[prop_id];
             ul.appendChild(li);
@@ -166,25 +179,83 @@ var mycomics = {};
         self.ShowSeries(new_series);
     };
     
+    self.SearchSeries = function() {
+        var search = document.getElementById("search-series-input").value;
+        //self.ShowTitles();
+        lib.search(self.Catalog, search, "title", self.ShowTitles);
+    };
+    
+    self.SetSeriesImage = function(img_elm, model, args) {
+        img_elm.src = "";
+        if(model.image) {
+            img_elm.src = model.image;
+        }
+        else if(model.comicvineid) {
+            img_elm.src = "pending_image3.gif";
+            self.ComicVineImage(img_elm, model, args);
+        }
+    };
+    
+    self.SetComicVineLink = function(span_elm, model, args) {
+        span_elm = lib.empty(span_elm);
+        if(model.comicvineid) {
+            var a_elm = document.createElement("a");
+            a_elm.target = "_blank";
+            a_elm.href = `https://comicvine.gamespot.com/api/${model.comicvineid}/`;
+            a_elm.appendChild($.textNode("ComicVine"));
+            span_elm.appendChild(a_elm);
+        }
+    };
+    
+    self.SearchComicVine = function(result_elm, model, args) {
+        //http://comicvine.gamespot.com/api/search?api_key=XXXXXXXXXXXX&format=json&resources=volume&
+        //query="All-New Doop"&field_list=name,site_detail_url,start_year,count_of_issues,image,description&limit=2
+    };
+    
+    self.ComicVineImage = function(elm, model) {
+        if(model.comicvineid) {
+            var url = `https://mazeediting-comicvine.azurewebsites.net/api/api?code=${AppSettings.MyComics_ComicVineAPI_Key}&comicvineid=${model.comicvineid}`;
+       /*     var url = `http://comicvine.gamespot.com/api/volume/${model.comicvineid}?api_key=${api_key}&format=json&field_list=count_of_issues,date_added,deck,description,image`;
+       */
+            fetch(url)
+                .then(
+                    function(response){ return response.json();}
+                ).then(
+                function(json){
+                    elm.src = json.results.image.small_url;
+                });
+        }
+    };
+    
+    self.SetIssueHave = function(elm, issue, args) {
+        if(issue.have > 0) {
+            elm.classList.add("have");
+        }
+        if(issue.have > 1) {
+            elm.classList.add("many");
+        }
+    };
+    
     /**
      * TempID is a means to keep a master array, and then allow access via position on UL select
      */
-    self.ApplyTempID = function() {
-        let series_i = self.Catalog.length;
+    self.ApplyTempID = function(array) {
+        let series_i = array.length;
         while(series_i--) {
-            self.Catalog[series_i].TempID = series_i;
+            array[series_i].TempID = series_i;
         }
     };
     
     self.Load = function() {
         var ls_data = localStorage.getItem(self.storageKey);
         if(ls_data) {
-            self.FullCatalog = JSON.parse(ls_data);
-            self.Catalog = self.FullCatalog.Catalog;
+            self.LoadCatalog(JSON.parse(ls_data));
         }
-        //display error - or get from server
-        self.ApplyTempID();
-        self.ShowTitles();
+        else {
+            //display error - or get from server
+            //self.ApplyTempID();
+            self.ShowTitles();
+        }
     };
     
     self.Save = function() {
@@ -202,6 +273,21 @@ var mycomics = {};
         var export_stamp = lib.timestamp();
         self.SystemAttr(data, "ExportStamp", export_stamp);
         lib.jsonSave(JSON.stringify(data, null, 2), "mycomics_" + export_stamp + ".json", "text/plain");
+    };
+    
+    self.LoadCatalog = function(catalog_obj) {
+        if(catalog_obj) {
+            self.FullCatalog = catalog_obj;
+            self.Catalog = self.FullCatalog.Catalog;
+            self.ShowSeries(self.Catalog[0]);
+        }
+        //display error - or get from server
+        self.ApplyTempID(self.Catalog);
+        self.ShowTitles();
+    };
+    
+    self.LoadFileEvent = function(evt) {
+        lib.jsonFileReadEvent(evt, self.LoadCatalog);
     };
     
     self.SystemAttr = function(object, attr, value) {
@@ -228,3 +314,24 @@ mycomics.Load();
  
 
 
+function find(array, property, search_for) {
+    for(var i = 0, len = array.length; i < len; i++) {
+        if(array[i][property] == search_for) {
+            return array[i];
+        }
+    }
+    return null;
+}
+
+function InputIssueFromFlatFile(issues, catalog) {
+	var series = "";
+	for(var issue_i = 0, len = issues.length; issue_i < len; issue_i++) {
+        var issue = issues[issue_i];
+        series = issue.series == series.title ? series : find(catalog, "title", issue.series);
+        if(series) {
+            series.issues = series.issues || [];
+        //check if issue exists?
+        series.issues.push(issue);
+        }
+    }
+}
