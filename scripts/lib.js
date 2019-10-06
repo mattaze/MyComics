@@ -88,7 +88,6 @@ lib.jsonFileReadEvent = function(evt, callback) {
 lib.dateStr = function(date, spacer) {
     var d = date || new Date();
     spacer = spacer || "-";
-    var d = new Date();
     return d.getFullYear() + spacer + lib.pad(d.getMonth() + 1, 2) + spacer + lib.pad(d.getDate(), 2);
 };
 lib.timestamp = function() {
@@ -181,7 +180,7 @@ lib.searchInfo = {
  */
 lib.search = function(data, search_for, property, callback) {
     if(!lib.searchInfo.worker) {
-        lib.searchInfo.worker = new Worker("search-worker.js");
+        lib.searchInfo.worker = new Worker("scripts/search-worker.js");
         lib.searchInfo.worker.onmessage = lib.searchResults;
     }
     var search_parameters = {data: data, search: search_for, property: property, instanceID: lib.searchInfo.instanceID};
@@ -192,7 +191,7 @@ lib.search = function(data, search_for, property, callback) {
     lib.searchInfo.instanceTime = Date.now();
     lib.searchInfo.worker.postMessage(search_parameters);
 };
-lib.searchResults = function (evt) {
+lib.searchResults = function(evt) {
     console.log("lib.search time: " + (Date.now() - lib.searchInfo.instanceTime) + " ms");
     
     var results = evt.data;
@@ -211,6 +210,14 @@ lib.clearClass = function(parent_node, class_name) {
     [].forEach.call(elms, function(elm) {
         elm.classList.remove(class_name);
     });
+};
+
+lib.selectElementContents = function(elm) {
+    var range = document.createRange();
+    range.selectNodeContents(elm);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
 };
 
 var $ = {};

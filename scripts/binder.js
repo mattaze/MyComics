@@ -37,7 +37,7 @@ Binder.func.GetModel = function (elm) {
     return Binder.Models[model_id];
 };
 Binder.func.SetModel = function(model, elm) {
-    let model_id = elm.dataset.BinderModelID
+    let model_id = elm.dataset.BinderModelID;
     if(model_id) {
         //update model
         Binder.Models[model_id] = model;
@@ -95,6 +95,7 @@ Binder.editor.text = function(elm) {
     
     elm.contentEditable = "true";
     elm.focus();
+    lib.selectElementContents(elm);
     elm.addEventListener("blur", self.applyChange);
 };
 Binder.editor.applyChange = function applyChange(evt) {
@@ -186,10 +187,10 @@ Binder.Types.value = function(elm, model, args) {
  * apply model text to element
  */
 Binder.Types.textprop = function(elm, model, args) {
-    if(typeof model[args] === 'string' || typeof model[args] === 'number') {
+    //if(typeof model[args] === 'string' || typeof model[args] === 'number') {
         elm.innerHTML = "";
         elm.appendChild($.textNode(args));
-    }
+    //}
     elm.dataset.contentBind = args;
 };
 

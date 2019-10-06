@@ -108,6 +108,7 @@ function ObjectArraySearch(object_array, search_for, property, instanceID) {
 }
 
 function ArraySearch(array, search_for, property) {
+    search_for = search_for.toLowerCase();
     return array.filter(item => {
         if(typeof(item[property]) == 'string') {
             return item[property].toLowerCase().indexOf(search_for) !== -1;

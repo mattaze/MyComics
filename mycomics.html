@@ -10,13 +10,13 @@
             font-family: 'Courier New', Courier, monospace
         }
         .issue-view span {
-            min-width: 5px;
+            min-width: 12px;
             display: inline-block;
-            min-height: 18px;
-            background-color: #ffffffbb;
+            min-height: 13px;
+            background-color: #ff9a9abb;
         }
     </style>
-    <link href="style/mycomics.css" rel="stylesheet" type="text/css">
+    <link href="styles/mycomics.css" rel="stylesheet" type="text/css">
 </head>
 
 <!-- next task:  On edit - fill with that issues details -->
@@ -71,17 +71,17 @@
             
             <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
                 <span>Comic Vine - X-Men - vol. 1 - 1963</span>
-                <img src="comicvine.svg" width="70">
+                <img src="images/comicvine.svg" width="70">
             </a>
             <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/the-uncanny-x-men/4050-3092" title="Comic Vine - Uncanny X-Men - vol. 1 - 1981">
                 <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
-                <img src="comicvine.svg" width="70">
+                <img src="images/comicvine.svg" width="70">
             </a>
             <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://www.marvel.com/comics/series/2258/uncanny_x-men_1963_-_2011" title="Marvel - Uncanny X-Men - vol. 1 - 1963">
                 <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
-                <img src="logo.marvel.svg" width="70">
+                <img src="images/logo.marvel.svg" width="70">
             </a>
-            <pre>
+            <pre style="display:none">
                 ways to add issue
                 add range of numbers
                 special-1  1   1-5 for TPB
@@ -123,8 +123,9 @@
         </div>
         <!-- <hr> -->
         <div class="grid-item">
+            <h3>Series List</h3>
             <div>
-                <input type="text" id="search-series-input" data-bind="input: SearchSeries" />
+                <input type="text" id="search-series-input" placeholder="search" data-bind="input: SearchSeries" />
                 <button id="search-series" data-bind="click: SearchSeries">Search</button>
             </div>
             <button id="add-series" data-bind="click: NewSeries">+</button>
@@ -184,7 +185,7 @@
                 <li><span data-bind="textprop: issueid"></span>: <span data-bind="value: issueid"></span></li>
                 <li><span data-bind="textprop: have"></span>: <span data-bind="value: have"></span></li>
                 <li><span data-bind="textprop: coverdate"></span>: <span data-bind="value: coverdate"></span></li>
-                <li><span data-bind="textprop: subtitle"></span>: <span data-bind="value: subtitle"></span></li>
+                <li><span data-bind="textprop: title"></span>: <span data-bind="value: title"></span></li>
                 <li><span data-bind="textprop: paid"></span>: <span data-bind="value: paid"></span></li>
                 <li><span data-bind="textprop: where"></span>: <span data-bind="value: where"></span></li>
                 <li><span data-bind="textprop: when"></span>: <span data-bind="value: when"></span></li>
@@ -206,9 +207,9 @@
     </footer>
 
     <script type="text/javascript" src="app.settings.js"></script>
-    <script type="text/javascript" src="lib.js"></script>
-    <script type="text/javascript" src="binder.js"></script>
-    <script type="text/javascript" src="mycomics.js"></script>
+    <script type="text/javascript" src="scripts/lib.js"></script>
+    <script type="text/javascript" src="scripts/binder.js"></script>
+    <script type="text/javascript" src="scripts/mycomics.js"></script>
 </body>
 
 </html>

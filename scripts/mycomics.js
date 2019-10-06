@@ -191,7 +191,7 @@ var mycomics = {};
             img_elm.src = model.image;
         }
         else if(model.comicvineid) {
-            img_elm.src = "pending_image3.gif";
+            img_elm.src = "images/pending_image3.gif";
             self.ComicVineImage(img_elm, model, args);
         }
     };
@@ -218,11 +218,12 @@ var mycomics = {};
        /*     var url = `http://comicvine.gamespot.com/api/volume/${model.comicvineid}?api_key=${api_key}&format=json&field_list=count_of_issues,date_added,deck,description,image`;
        */
             fetch(url)
-                .then(
-                    function(response){ return response.json();}
-                ).then(
-                function(json){
+                .then(response => response.json())
+                .then(function(json){
                     elm.src = json.results.image.small_url;
+                    if(!model.image) {
+                        model.image = elm.src;
+                    }
                 });
         }
     };
