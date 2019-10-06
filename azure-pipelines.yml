@@ -33,3 +33,5 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: ‘$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip’
