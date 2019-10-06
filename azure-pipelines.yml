@@ -29,9 +29,9 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/dist'
     archiveType: 'zip'
     includeRootFolder: false
-    archiveFile: ‘$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip’
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: ‘$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip’
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
