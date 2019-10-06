@@ -10,9 +10,23 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.sourcesDirectory)'
+    Contents: |
+      images/*
+      scripts/*
+      styles/*
+      LICENSE
+      *.png
+      *.ico
+      *.html
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
+    OverWrite: true
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(build.sourcesDirectory)'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
     archiveType: 'zip'
     includeRootFolder: false
     archiveFile: ‘$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip’
