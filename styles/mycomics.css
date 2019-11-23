@@ -1,56 +1,100 @@
+/* body.my-comics-style */
+body.my-comics-style {
+  font-family: 'Courier New', Courier, monospace; }
 
-ul.issues {
-    list-style: none;
-    columns: 1;
-    padding: 0px 10px;
+body.my-comics-style ul.issues {
+  list-style: none;
+  columns: 1;
+  padding: 0px 10px;
+  width: fit-content; }
+
+body.my-comics-style ul#titles {
+  max-height: 500px;
+  overflow-y: scroll; }
+
+body.my-comics-style #tight-detail-view table#selected-series-details td:nth-child(2) {
+  word-break: break-all;
+  background-color: lightblue; }
+
+body.my-comics-style table.issues td {
+  border: 1px solid black; }
+
+body.my-comics-style .issues > li {
+  border: solid 1px rgba(0, 0, 0, 0); }
+
+body.my-comics-style .have-none {
+  background-color: yellow; }
+
+body.my-comics-style .issues > li.have, body.my-comics-style .have {
+  /* background-color: unset; */
+  background-color: lightgreen; }
+
+body.my-comics-style .issues > li.have.many, body.my-comics-style .many {
+  background-color: deepskyblue; }
+
+body.my-comics-style .issues > li:hover {
+  /* background-color: rgb(253, 253, 74); */
+  border: solid 1px black;
+  box-sizing: border-box; }
+
+body.my-comics-style .issue-view span {
+  min-width: 12px;
+  display: inline-block;
+  min-height: 13px;
+  background-color: #ff9a9abb; }
+
+body.my-comics-style li.issue {
+  background-color: unset;
+  border: solid black;
+  border-width: 0px 1px 1px; }
+
+body.my-comics-style .grid-container {
+  display: grid;
+  grid-template-columns: 50% 48%;
+  grid-gap: 1%; }
+
+body.my-comics-style .grid-item {
+  background-color: #efdfdf;
+  border-radius: 5px; }
+
+body.my-comics-style .edit-field {
+  min-height: 10px;
+  background-color: lightblue; }
+
+body.my-comics-style .selectable {
+  cursor: pointer; }
+
+body.my-comics-style .selectable:hover {
+  background-color: #f0ff66; }
+
+body.my-comics-style .selectable.selected {
+  background-color: #6bff66; }
+
+/*# sourceMappingURL=mycomics.css.map */
+
+.volume-page {
+  margin: 0;
+  padding: 5px;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
 }
 
-.issues > li {
-    background-color: yellow;
-    border: solid 1px rgba(0,0,0,0);
-}
-.issues > li.have {
-    /* background-color: unset; */
-    background-color: lightgreen;
-}
-.issues > li.have.many {
-    background-color: deepskyblue;
+#all-issues {
+  height: 1000px;
 }
 
-.issues > li:hover{
-    /* background-color: rgb(253, 253, 74); */
-    border: solid 1px black;
-    box-sizing: border-box;
+.issue-panel {
+  width: 5%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
 }
 
-li.issue {
-    background-color: unset;
-    border: solid black;
-    border-width: 0px 1px 1px;
-}
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 60% 38%;
-    grid-gap: 1%;
-  }
-  
-.grid-item {
-    background-color: #efdfdf;
-    border-radius: 5px;
+#selected-issue table {
+  width: 100%;
 }
-  
-.edit-field {
-    min-height: 10px;
-    background-color:lightblue;
-}
-
-.selectable {
-    cursor: pointer;
-}
-.selectable:hover {
-    background-color: #f0ff66;
-}
-.selectable.selected {
-    background-color: #6bff66;
+#selected-issue td, #selected-issue th {
+  border: 1px gray solid;
 }

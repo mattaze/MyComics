@@ -5,27 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Comics</title>
-    <style>
-        body {
-            font-family: 'Courier New', Courier, monospace
-        }
-        .issue-view span {
-            min-width: 12px;
-            display: inline-block;
-            min-height: 13px;
-            background-color: #ff9a9abb;
-        }
-    </style>
     <link href="styles/mycomics.css" rel="stylesheet" type="text/css">
 </head>
 
 <!-- next task:  On edit - fill with that issues details -->
 
-<body>
+<body class="my-comics-style">
     <header>
         <nav>
             <ul>
                 <li>Menu item</li>
+                <li><button onclick="document.body.classList.toggle('my-comics-style')">Toggle CSS</button></li>
             </ul>
         </nav>
     </header>
@@ -60,73 +50,95 @@
     
     <div class="grid-container">
         <div id="selected-series" class="grid-item">
-            <h1 data-bind="value: title">Uncanny X-Men - vol. 1 - 1963</h1>
-            <p data-bind="text: image, dblclick: edit" class="edit-field">ddd</p>
-            <img data-bind="eval: SetSeriesImage" style="min-height: 200px; height: 200px;">
-            
-            <div>
-                Comic Vine ID: <span data-bind="value: comicvineid" class="edit-field"></span>
-                <span data-bind="eval: SetComicVineLink"></span>
+            <div id="display-type">
+                <button>Tight Detail</button>
+                <button>Medium Detail</button>
             </div>
-            
-            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
-                <span>Comic Vine - X-Men - vol. 1 - 1963</span>
-                <img src="images/comicvine.svg" width="70">
-            </a>
-            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/the-uncanny-x-men/4050-3092" title="Comic Vine - Uncanny X-Men - vol. 1 - 1981">
-                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
-                <img src="images/comicvine.svg" width="70">
-            </a>
-            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://www.marvel.com/comics/series/2258/uncanny_x-men_1963_-_2011" title="Marvel - Uncanny X-Men - vol. 1 - 1963">
-                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
-                <img src="images/logo.marvel.svg" width="70">
-            </a>
-            <pre style="display:none">
-                ways to add issue
-                add range of numbers
-                special-1  1   1-5 for TPB
-            </pre>
-            <button data-bind="click: NewIssue" title="Add Issue">+ Add Issue</button>
-            <div>
-                <h4>Have Color Key</h4>
-                <ul class="issues">
-                    <li class="">Have None</li>
-                    <li class="have">Have 1</li>
-                    <li class="have many">Have Many</li>
-                </ul>
-            </div>
-            <ul class="issues" data-bind="foreach: issues, selectKey: TempID, click: SelectIssue">
-                <li data-bind="text: issueid, data: TempID, eval: SetIssueHave">-1</li>
-            </ul>
-            
-            <ul style="display:none" class="issues" >
-                <li class="have">-1</li>
-                <li class="have">Giant-Size #1, 94-100</li>
-                <li>101</li>
-                <li>102</li>
-                <li>103</li>
-                <li>104</li>
-                <li>105</li>
-                <li class="have">110</li>
-                <li class="issue">
-                    <ul>
-                        <li>110</li>
-                        <li class="js-coverdate">Apr 1978</li>
-                        <li class="js-have">have: 1</li>
-                        <li class="js-paid">£5</li>
-                        <li class="js-where">Manchester Comic Fair</li>
-                        <li class="js-when">2019-06-29</li>
+            <div id="tight-detail-view">
+                <table id="selected-series-details">
+                    <tr>
+                        <td></td>
+                        <td data-bind="value: title"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td data-bind="value: image"></td>
+                    </tr>
+                    <tr>
+                        <td>Comic Vine ID:</td>
+                        <td data-bind="value: comicvineid"></td>
+                    </tr>
+                    <tr>
+                        <td>Comic Vine ID:</td>
+                        <td data-bind="eval: SetComicVineLink"></td>
+                    </tr>
+                </table>
+                <div>
+                    <h4>Have Color Key</h4>
+                    <ul class="issues">
+                        <li class="have-none">Have None</li>
+                        <li class="have">Have 1</li>
+                        <li class="have many">Have Many</li>
                     </ul>
-                </li>
-                <li>111</li>
-            </ul>
+                </div>
+                <button data-bind="click: NewIssue" title="Add Issue">+ Add Issue</button>
+                <table class="issues" style="border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>issue</th>
+                            <th>have</th>
+                            <th>coverdate</th>
+                            <th>title</th>
+                            <th>paid</th>
+                            <th>where</th>
+                            <th>when</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: issues, selectKey: TempID">
+                        <tr>
+                            <td data-bind="value: issueid"></td>
+                            <td data-bind="value: have, eval: SetIssueHave"></td>
+                            <td data-bind="value: coverdate"></td>
+                            <td data-bind="value: title"></td>
+                            <td data-bind="value: paid"></td>
+                            <td data-bind="value: where"></td>
+                            <td data-bind="value: when"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="medium-detail-view" style="display:none">
+                    <h1 data-bind="value: title"></h1>
+                    <p data-bind="text: image, dblclick: edit" class="edit-field"></p>
+                    <img data-bind="eval: SetSeriesImage" style="min-height: 200px; height: 200px;">
+                    
+                    <div>
+                        Comic Vine ID: <span data-bind="value: comicvineid" class="edit-field"></span>
+                        <span data-bind="eval: SetComicVineLink"></span>
+                    </div>
+                    <div>
+                        <h4>Have Color Key</h4>
+                        <ul class="issues">
+                            <li class="">Have None</li>
+                            <li class="have">Have 1</li>
+                            <li class="have many">Have Many</li>
+                        </ul>
+                    </div>
+                    <button data-bind="click: NewIssue" title="Add Issue">+ Add Issue</button>
+                    <ul class="issues" data-bind="foreach: issues, selectKey: TempID, click: SelectIssue">
+                        <li data-bind="text: issueid, data: TempID, eval: SetIssueHave">-1</li>
+                    </ul>
+            </div>
         </div>
         <!-- <hr> -->
         <div class="grid-item">
             <h3>Series List</h3>
             <div>
-                <input type="text" id="search-series-input" placeholder="search" data-bind="input: SearchSeries" />
-                <button id="search-series" data-bind="click: SearchSeries">Search</button>
+                <form data-bind="reset: SearchSeries">
+                    <input type="text" id="search-series-input" placeholder="search" data-bind="input: SearchSeries" />
+                    <button type="reset" title="clear search">X</button>
+                    <button type="button" id="search-series" data-bind="click: SearchSeries">Search</button>
+                </form>
             </div>
             <button id="add-series" data-bind="click: NewSeries">+</button>
             <ul id="titles" data-bind="click: SelectSeries">
@@ -190,6 +202,26 @@
                 <li><span data-bind="textprop: where"></span>: <span data-bind="value: where"></span></li>
                 <li><span data-bind="textprop: when"></span>: <span data-bind="value: when"></span></li>
             </ul>
+        </template>
+        <template id="old-templates">
+            
+            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/x-men/4050-2133" title="Comic Vine - X-Men - vol. 1 - 1963">
+                <span>Comic Vine - X-Men - vol. 1 - 1963</span>
+                <img src="images/comicvine.svg" width="70">
+            </a>
+            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://comicvine.gamespot.com/the-uncanny-x-men/4050-3092" title="Comic Vine - Uncanny X-Men - vol. 1 - 1981">
+                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
+                <img src="images/comicvine.svg" width="70">
+            </a>
+            <a style="display:none" target="_blank" rel="noopener noreferrer" href="https://www.marvel.com/comics/series/2258/uncanny_x-men_1963_-_2011" title="Marvel - Uncanny X-Men - vol. 1 - 1963">
+                <span>Comic Vine - Uncanny X-Men - vol. 1 - 1981</span>
+                <img src="images/logo.marvel.svg" width="70">
+            </a>
+            <pre style="display:none">
+                ways to add issue
+                add range of numbers
+                special-1  1   1-5 for TPB
+            </pre>
         </template>
     </div>
     

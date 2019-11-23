@@ -41,7 +41,10 @@ onmessage = function(evt) {
     var search_object = evt.data.data;
     var results;
     
-    if(Array.isArray(search_object)) {
+    if(!search_for) {
+        results = search_object;
+    }
+    else if(Array.isArray(search_object)) {
         results = ArraySearch(search_object, search_for, evt.data.property);
     }
     else {

@@ -139,12 +139,19 @@ Binder.Types.change = function(elm, model, args) {
 Binder.Types.input = function(elm, model, args) {
     Binder.Types.event(elm, model, args, "input");
 };
+/**
+ * attach reset event to form element
+ */
+Binder.Types.reset = function(elm, model, args) {
+    Binder.Types.event(elm, model, args, "reset");
+    //Binder.Types.event(elm, model, args, "change");
+};
 
 Binder.Types.dblclick  = function(elm, model, args) {
     Binder.Types.event(elm, model, args, "dblclick");
 };
 Binder.Types.event = function(elm, model, args, event_type) {
-    //temp fix untill multiple args can be bound
+    //temp fix until multiple args can be bound
     if(model.issueid) {
         elm.addEventListener(event_type, mycomics.edit);
         return;
@@ -156,8 +163,16 @@ Binder.Types.event = function(elm, model, args, event_type) {
 };
 
 Binder.Types.eval = function(elm, model, args) {
+    
     //temp fix
-    mycomics[args](elm, model);
+    if(typeof mycomics !== 'undefined') {
+        mycomics[args](elm, model);
+    }
+    else {
+        if(volume) {
+            volume[args](elm, model);
+        }
+    }
 };
 
 /**
@@ -245,6 +260,7 @@ Binder.Types.foreach = function (elm, model, args) {
     for(var a_i = 0; a_i < model_arr.length; a_i++) {
         let row_elm = template.cloneNode(true);
         let row_item = model_arr[a_i];
+        row_elm.firstElementChild.xParent = elm;
         Binder.Apply(row_item, row_elm);
         //row_elm.dataset.id = row_item.TempID;
         elm.appendChild(row_elm);

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Comics</title>
+    <link href="styles/mycomics.css" rel="stylesheet" type="text/css">
+</head>
+
+<!-- next task:  On edit - fill with that issues details -->
+
+<body class="my-comics-style volume-page">
+    <header>
+        <nav>
+            <ul>
+                <li>Menu item</li>
+                <li><button onclick="document.body.classList.toggle('my-comics-style')">Toggle CSS</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>My Comics JSON</h1>
+    <div>
+        <input type="file" accept=".json" id="global-load"  data-bind="change: LoadFileEvent"/>
+        <button data-bind="click: Save">Browser Save</button>
+        <button data-bind="click: Export">Export</button>
+    </div>
+    
+    <div id="panels">
+        
+    </div>
+
+
+    <div class="grid-container">
+        <div id="selected-issue" class="grid-item">
+            <table style="border-collapse: collapse;"">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Apr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span data-bind="cover_date"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="all-issues" class="grid-item" data-bind="foreach: issues">
+            <div class="issue-panel" data-bind="eval: backgroundImage">
+                <div data-bind="text: issue_number">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div style="display:none">
+        <template id="unqieue-id-10101">
+            <a target="_blank" rel="noopener noreferrer" href="/" title="Comic Vine - NAME - vol. 1 - 1981">
+                Comic Vine - NAME - vol. 1 - 1981
+                <img src="comicvine.svg" width="70">
+            </a>
+        </template>
+    </div>
+    
+    <footer>
+        <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Sitemap</a></li>
+        </ul>
+        <h5>a MazeEditing attempt</h5>
+<!--        <img src="facebook-logo.png">
+        <img src="twitter-logo.png">
+        <img src="linkedin-logo.png"> -->
+    </footer>
+
+    <script type="text/javascript" src="app.settings.js"></script>
+    <script type="text/javascript" src="scripts/lib.js"></script>
+    <script type="text/javascript" src="scripts/binder.js"></script>
+    <script type="text/javascript" src="scripts/uncannyxmenissues.js"></script>
+    <script type="text/javascript" src="scripts/volume.js"></script>
+</body>
+
+</html>

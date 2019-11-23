@@ -179,8 +179,11 @@ var mycomics = {};
         self.ShowSeries(new_series);
     };
     
-    self.SearchSeries = function() {
-        var search = document.getElementById("search-series-input").value;
+    self.SearchSeries = function(evt) {
+        var search = "";
+        if(evt.type != "reset"){
+            search = document.getElementById("search-series-input").value;
+        }
         //self.ShowTitles();
         lib.search(self.Catalog, search, "title", self.ShowTitles);
     };
@@ -234,6 +237,9 @@ var mycomics = {};
         }
         if(issue.have > 1) {
             elm.classList.add("many");
+        }
+        if(!issue.have) {
+            elm.classList.add("have-none");
         }
     };
     
@@ -333,6 +339,28 @@ function InputIssueFromFlatFile(issues, catalog) {
             series.issues = series.issues || [];
         //check if issue exists?
         series.issues.push(issue);
+        }
+    }
+}
+
+function DateFix(catalog) {
+    for(var series_i = 0; series_i < catalog.length; series_i++) {
+        var series = catalog[series_i];
+        if(series.issues) {
+            for(var issue_i = 0; issue_i < series.issues.length; issue_i++) {
+                var issue = series.issues[issue_i];
+                // if(issue.coverdate && issue.coverdate.length > 2 && 
+                //     (issue.coverdate[0] == "1" || issue.coverdate[0] == "2")) {
+                //     var new_cover_date = new Date(issue.coverdate);
+                //     var new_cover_date_str = new_cover_date.toLocaleString('gb',{month:'short'}) + " " + new_cover_date.getFullYear();
+                //     issue.coverdate = new_cover_date_str;
+                // }
+                if(issue.when && issue.when.indexOf("T23") > 0) {
+                    var new_when_date = new Date(issue.when);
+                    var new_when_date_str = lib.dateStr(new_when_date);
+                    issue.when = new_when_date_str;
+                }
+            }
         }
     }
 }
