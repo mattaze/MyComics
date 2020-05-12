@@ -372,17 +372,64 @@ var dailyimage = {};
 	self.SetInfo = function() {
 		let infos =  document.querySelectorAll("[data-info]");
 		infos.forEach((elm) => {
-			elm.innerHTML = issuedata[elm.dataset["info"]];
+			let field = elm.dataset["info"];
+			let value = issuedata[field];
+			if(self.Set[field]) {
+				self.Set[field](elm, value);
+			}
+			else {
+				elm.innerHTML = value;
+			}
 		});
+	}
+	self.Set = {
+		"person_credits": function(elm, people) {
+			elm.innerHTML = people.reduce((all, person) => 
+				all + `<li>${self.Set.RoleIcon(person.role)} <strong>${person.name}</strong> ${person.role}</li>`
+			, "")
+		},
+		"RoleIcon": function(roles) {
+			let icon = "";
+			if(roles.includes("writer")) {
+				icon += "✍";
+			}
+			if(roles.includes("penciler")) {
+				icon += "✏";
+			}
+			if(roles.includes("inker")) {
+				icon += "✒";
+			}
+			if(roles.includes("letterer")) {
+				icon += "💬";
+			}
+			if(roles.includes("cover")) {
+				icon += "📔";
+			}
+			if (roles.includes("colorist")) {
+				icon += "💧";
+			}
+            return icon;
+		}
 	}
     
     self.ShowInfo = function() {
-        //on click 
+        let info = document.getElementById("info").classList.remove("hide");
+    }
+    self.HideInfo = function() {
+        document.getElementById("info").classList.add("hide");
+    }
+
+    self.ReloadPage = function() {
+        document.getElementById("message").innerText = "reloading page";
+        location.reload(true);
     }
 
     self.ClickEvent = function(evt) {
-        document.getElementById("message").innerText = "reloading page";
-        location.reload();
+        self.ShowInfo();
+        //setTimeout(self.HideInfo, 3000);
+    };
+    self.DoubleClickEvent = function(evt) {
+        self.ReloadPage();
     };
 
     self.SetTimers = function(){
@@ -395,6 +442,7 @@ var dailyimage = {};
     self.Load = function(){
 		self.SetInfo();
         document.addEventListener("click", self.ClickEvent);
+        document.querySelector("footer").addEventListener("dblclick", self.DoubleClickEvent);
         self.SetTimers();
     };
 
