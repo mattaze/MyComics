@@ -420,6 +420,7 @@ var dailyimage = {};
     }
 
     self.ReloadPage = function() {
+        
         document.getElementById("message").innerText = "reloading page";
         location.reload(true);
     }
