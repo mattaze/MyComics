@@ -1,0 +1,56 @@
+body {
+    background-color: darkgray;
+}
+
+.fullscreen {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fullscreen img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.fixed-bottom {
+    position: absolute;
+    bottom: 0px;
+}
+
+.hide {
+    display: none;
+}
+
+.screenwiper {
+    position: fixed;
+    background-color: blue;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.info {
+    position: absolute;
+    left: 10vw;
+    top: 20vh;
+    width: 80vw;
+    height: 60vh;
+    background-color: rgba(161, 161, 161, 0.9);
+}
+
+footer {
+    background-color: #4a148c63;
+    color: #202020;
+}
+
+footer h5 {
+    margin: 2px 0;
+}
+footer.fixed-bottom {
+    box-sizing: border-box;
+    width: 100vw;
+    padding: 0 5px;
+}
